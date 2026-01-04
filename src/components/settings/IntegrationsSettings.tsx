@@ -40,7 +40,7 @@ export function IntegrationsSettings() {
       <div>
         <h1 className="text-2xl font-semibold text-ink">Integrations</h1>
         <p className="text-sm text-muted-ink mt-2">
-          Allow Toolpath Academy to reference other apps and services for more context.
+          Allow MachineIQ to reference other apps and services for more context.
         </p>
       </div>
 

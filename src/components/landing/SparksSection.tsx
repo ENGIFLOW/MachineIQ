@@ -15,11 +15,11 @@ export function SparksSection() {
     <section className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]" id="sparks">
       <div className="card space-y-4">
         <h2 className="text-2xl font-semibold text-ink">
-          Toolpath Sparks: our AI usage currency
+          Sparks: our AI usage currency
         </h2>
         <p className="text-sm text-muted-ink">
           Every AI interaction—from G-code critique to mentor chat—draws from an
-          allocation of Toolpath Sparks. Institutions assign monthly Sparks per
+          allocation of Sparks. Institutions assign monthly Sparks per
           seat and top up as needed. Rollover buffers cover busy production weeks
           without surprise overages.
         </p>

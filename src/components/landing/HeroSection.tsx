@@ -10,11 +10,11 @@ export function HeroSection() {
       <div className="space-y-7">
         <span className="badge">AI-powered CNC mastery</span>
         <h1 className="text-balance text-4xl font-semibold leading-tight text-ink sm:text-5xl lg:text-6xl">
-          Train the next generation of CNC talent with Toolpath Academy.
+          Train the next generation of CNC talent with MachineIQ.
         </h1>
         <p className="max-w-xl text-lg text-muted-ink">
           Give students, instructors, and operations leaders a shared digital
-          workshop. Toolpath Academy blends adaptive CNC lesson plans, machine
+          workshop. MachineIQ blends adaptive CNC lesson plans, machine
           simulators, and AI coaching to accelerate certification readiness.
         </p>
         <div className="flex flex-wrap gap-3">
@@ -61,7 +61,7 @@ export function HeroSection() {
         </div>
         <div className="mt-8 rounded-2xl border border-white/40 bg-white/70 p-4 backdrop-blur">
           <div className="mb-3 h-40 rounded-2xl border border-dashed border-ink/10 bg-surface/60" role="img" aria-label="Placeholder CNC simulator screenshot" />
-          <h3 className="text-sm font-semibold text-ink">Toolpath Sparks in action</h3>
+          <h3 className="text-sm font-semibold text-ink">Sparks in action</h3>
           <p className="mt-2 text-sm text-muted-ink">
             Students spend Sparks to run simulations, receive AI critiques, and
             request instructor reviews—keeping cost predictable for your

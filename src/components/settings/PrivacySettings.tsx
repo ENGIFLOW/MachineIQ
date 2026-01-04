@@ -16,13 +16,13 @@ export function PrivacySettings() {
         </div>
         <div>
           <h1 className="text-2xl font-semibold text-ink">Privacy</h1>
-          <p className="text-sm text-muted-ink">Toolpath Academy believes in transparent data practices</p>
+          <p className="text-sm text-muted-ink">MachineIQ believes in transparent data practices</p>
         </div>
       </div>
 
       <Card className="space-y-4 p-6">
         <p className="text-sm text-muted-ink">
-          Learn how your information is protected when using Toolpath Academy products, and visit our{' '}
+          Learn how your information is protected when using MachineIQ products, and visit our{' '}
           <a href="/privacy" className="underline hover:text-ink">Privacy Center</a> and{' '}
           <a href="/privacy-policy" className="underline hover:text-ink">Privacy Policy</a> for more details.
         </p>
@@ -95,7 +95,7 @@ export function PrivacySettings() {
 
         <div className="flex items-center justify-between border-t border-ink/10 pt-6">
           <div className="space-y-1 flex-1">
-            <p className="text-sm font-medium text-ink">Help improve Toolpath Academy</p>
+            <p className="text-sm font-medium text-ink">Help improve MachineIQ</p>
             <p className="text-sm text-muted-ink">
               Allow the use of your chats and coding sessions to train and improve AI models.{' '}
               <a href="/privacy" className="underline hover:text-ink">Learn more</a>

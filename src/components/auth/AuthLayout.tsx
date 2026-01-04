@@ -15,7 +15,7 @@ export function AuthLayout({ title, subtitle, children }: AuthLayoutProps) {
           <div className="text-center space-y-2">
             <Link href="/" className="inline-block">
               <h1 className="text-2xl font-semibold text-ink">
-                Toolpath Academy
+                MachineIQ
               </h1>
             </Link>
             <h2 className="text-xl font-semibold text-ink">{title}</h2>
@@ -32,7 +32,7 @@ export function AuthLayout({ title, subtitle, children }: AuthLayoutProps) {
             Master CNC programming with AI
           </h3>
           <p className="text-white/90">
-            Join students and instructors using Toolpath Academy to accelerate
+            Join students and instructors using MachineIQ to accelerate
             certification readiness through adaptive learning and real-time AI
             coaching.
           </p>

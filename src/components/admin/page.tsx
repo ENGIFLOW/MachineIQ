@@ -34,7 +34,7 @@ export default function AdminPage() {
         </Card>
 
         <Card className="space-y-4">
-          <h3 className="font-semibold text-ink">Toolpath Sparks</h3>
+          <h3 className="font-semibold text-ink">Sparks</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-muted-ink">Total Allocated</span>

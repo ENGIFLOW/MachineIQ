@@ -6,7 +6,7 @@ import { UniversalHeader } from '@/components/layout/UniversalHeader'
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  title: 'Toolpath Academy',
+  title: 'MachineIQ',
   description:
     'AI-powered CNC training for students, instructors, and advanced manufacturing teams.',
 }
