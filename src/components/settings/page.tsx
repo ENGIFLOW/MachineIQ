@@ -6,18 +6,12 @@ import { GeneralSettings } from '@/components/settings/GeneralSettings'
 import { AccountSettings } from '@/components/settings/AccountSettings'
 import { PrivacySettings } from '@/components/settings/PrivacySettings'
 import { BillingSettings } from '@/components/settings/BillingSettings'
-import { UsageSettings } from '@/components/settings/UsageSettings'
-import { CapabilitiesSettings } from '@/components/settings/CapabilitiesSettings'
-import { IntegrationsSettings } from '@/components/settings/IntegrationsSettings'
 
 const settingsNav = [
   { id: 'general', label: 'General', href: '/settings' },
   { id: 'account', label: 'Account', href: '/settings/account' },
   { id: 'privacy', label: 'Privacy', href: '/settings/privacy' },
   { id: 'billing', label: 'Billing', href: '/settings/billing' },
-  { id: 'usage', label: 'Usage', href: '/settings/usage' },
-  { id: 'capabilities', label: 'Capabilities', href: '/settings/capabilities' },
-  { id: 'integrations', label: 'Integrations', href: '/settings/integrations' },
 ]
 
 export default function SettingsPage({ activeTab }: { activeTab: string }) {
@@ -34,12 +28,6 @@ export default function SettingsPage({ activeTab }: { activeTab: string }) {
         return <PrivacySettings />
       case 'billing':
         return <BillingSettings />
-      case 'usage':
-        return <UsageSettings />
-      case 'capabilities':
-        return <CapabilitiesSettings />
-      case 'integrations':
-        return <IntegrationsSettings />
       default:
         return <GeneralSettings />
     }

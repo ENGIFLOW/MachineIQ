@@ -1,28 +1,81 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
+import { getCurrentUserProfile, updateCurrentUserProfile } from '@/lib/actions/profile'
 
 export function GeneralSettings() {
-  const [fullName, setFullName] = useState('jacob')
-  const [displayName, setDisplayName] = useState('jacob')
-  const [workDescription, setWorkDescription] = useState('Engineering')
-  const [preferences, setPreferences] = useState('')
-  const [notifications, setNotifications] = useState(true)
-  const [emailNotifications, setEmailNotifications] = useState(false)
+  const [fullName, setFullName] = useState('')
+  const [displayName, setDisplayName] = useState('')
+  const [workDescription, setWorkDescription] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [saveMessage, setSaveMessage] = useState<string | null>(null)
+
+  // Load profile data on mount
+  useEffect(() => {
+    async function loadProfile() {
+      const { profile, error } = await getCurrentUserProfile()
+      if (profile && !error) {
+        setFullName(profile.full_name || '')
+        setDisplayName(profile.full_name || '')
+      }
+      setLoading(false)
+    }
+    loadProfile()
+  }, [])
+
+  const handleSave = async () => {
+    setSaving(true)
+    setSaveMessage(null)
+    
+    const result = await updateCurrentUserProfile({
+      full_name: fullName,
+    })
+
+    if (result.success) {
+      setSaveMessage('Profile updated successfully!')
+      setTimeout(() => setSaveMessage(null), 3000)
+    } else {
+      setSaveMessage(result.error || 'Failed to update profile')
+    }
+    
+    setSaving(false)
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-2xl font-semibold text-ink">General</h1>
+        <Card className="p-6">
+          <p className="text-muted-ink">Loading profile...</p>
+        </Card>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-ink">General</h1>
 
+      {saveMessage && (
+        <div className={`p-4 rounded-lg ${
+          saveMessage.includes('success') 
+            ? 'bg-green-50 text-green-800' 
+            : 'bg-red-50 text-red-800'
+        }`}>
+          {saveMessage}
+        </div>
+      )}
+
       {/* User Information */}
       <Card className="space-y-6 p-6">
         <div className="flex items-start gap-4">
           <div className="h-12 w-12 rounded-full bg-surface-strong flex items-center justify-center text-lg font-semibold text-ink">
-            J
+            {fullName.charAt(0).toUpperCase() || '?'}
           </div>
           <div className="flex-1 space-y-4">
             <div className="space-y-2">
@@ -35,7 +88,7 @@ export function GeneralSettings() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="displayName">What should AI call you?</Label>
+              <Label htmlFor="displayName">Display name</Label>
               <Input
                 id="displayName"
                 value={displayName}
@@ -51,6 +104,7 @@ export function GeneralSettings() {
                 onChange={(e) => setWorkDescription(e.target.value)}
                 className="flex w-full rounded-lg border border-[hsl(var(--input))] bg-white px-4 py-2.5 text-sm text-ink focus:border-[hsl(var(--spark))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--spark))]/20 transition"
               >
+                <option value="">Select an option</option>
                 <option value="Engineering">Engineering</option>
                 <option value="Manufacturing">Manufacturing</option>
                 <option value="Education">Education</option>
@@ -60,76 +114,15 @@ export function GeneralSettings() {
             </div>
           </div>
         </div>
-      </Card>
-
-      {/* Preferences */}
-      <Card className="space-y-4 p-6">
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-ink">
-            What personal preferences should AI consider in responses?
-          </h3>
-          <p className="text-sm text-muted-ink">
-            Your preferences will apply to all conversations. Learn about preferences
-          </p>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="preferences">Preferences</Label>
-          <textarea
-            id="preferences"
-            value={preferences}
-            onChange={(e) => setPreferences(e.target.value)}
-            placeholder="e.g. I primarily work with 3-axis mills and prefer detailed explanations..."
-            className="w-full h-24 rounded-lg border border-[hsl(var(--input))] bg-white px-4 py-2.5 text-sm text-ink placeholder:text-muted-ink focus:border-[hsl(var(--spark))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--spark))]/20 transition resize-none"
-          />
-        </div>
-      </Card>
-
-      {/* Notifications */}
-      <Card className="space-y-6 p-6">
-        <h3 className="text-lg font-semibold text-ink">Notifications</h3>
         
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-ink">Response completions</p>
-            <p className="text-sm text-muted-ink">
-              Get notified when AI has finished a response. Most useful for long-running tasks like tool calls and simulations.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setNotifications(!notifications)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              notifications ? 'bg-[hsl(var(--spark))]' : 'bg-surface-strong'
-            }`}
+        <div className="flex justify-end pt-4 border-t border-ink/10">
+          <Button 
+            onClick={handleSave} 
+            disabled={saving}
+            variant="primary"
           >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                notifications ? 'translate-x-6' : 'translate-x-1'
-              }`}
-            />
-          </button>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-ink">Email notifications</p>
-            <p className="text-sm text-muted-ink">
-              Get an email when AI workbench tasks have completed or need your response.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setEmailNotifications(!emailNotifications)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              emailNotifications ? 'bg-[hsl(var(--spark))]' : 'bg-surface-strong'
-            }`}
-          >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                emailNotifications ? 'translate-x-6' : 'translate-x-1'
-              }`}
-            />
-          </button>
+            {saving ? 'Saving...' : 'Save Changes'}
+          </Button>
         </div>
       </Card>
     </div>

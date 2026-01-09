@@ -1,0 +1,7 @@
+# scripts/.gitignore
+venv/
+.env
+__pycache__/
+*.pyc
+*.json
+*.csv

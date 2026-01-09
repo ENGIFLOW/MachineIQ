@@ -1,76 +1,68 @@
-const readinessMetrics = [
-  { label: 'Toolpath confidence', value: 88 },
-  { label: 'Spindle safety checks', value: 72 },
-  { label: 'Instructor feedback loops', value: 94 },
-]
+'use client'
+
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { createClient } from '@/lib/supabase/client'
+import type { User } from '@supabase/supabase-js'
 
 export function HeroSection() {
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    // Get initial session
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user)
+      setLoading(false)
+    })
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
+
+  const getStartedHref = user ? '/payment' : '/auth/sign-up'
+
   return (
-    <section className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
-      <div className="space-y-7">
-        <span className="badge">AI-powered CNC mastery</span>
-        <h1 className="text-balance text-4xl font-semibold leading-tight text-ink sm:text-5xl lg:text-6xl">
-          Train the next generation of CNC talent with MachineIQ.
-        </h1>
-        <p className="max-w-xl text-lg text-muted-ink">
-          Give students, instructors, and operations leaders a shared digital
-          workshop. MachineIQ blends adaptive CNC lesson plans, machine
-          simulators, and AI coaching to accelerate certification readiness.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <a href="/auth/sign-up" className="btn-primary">
-            Get started free
-          </a>
-          <a href="#pricing" className="btn-secondary">
-            Talk to our team
-          </a>
-        </div>
-        <ul className="grid gap-3 text-sm text-muted-ink">
-          <li className="feature-bullet">
-            Standards-aligned curriculum mapped to NIMS pathways.
-          </li>
-          <li className="feature-bullet">
-            AI workbench converts G-code into toolpath visualizations and safety
-            insights.
-          </li>
-          <li className="feature-bullet">
-            Institutional dashboards track cohort progress and usage.
-          </li>
-        </ul>
+    <section className="text-center space-y-6">
+      <span className="badge">CNC Training Platform</span>
+      <h1 className="text-balance text-4xl font-semibold leading-tight text-ink sm:text-5xl lg:text-6xl">
+        Master CNC Programming with Expert-Led Courses
+      </h1>
+      <p className="max-w-2xl mx-auto text-lg text-muted-ink">
+        Learn CNC machining from the ground up. Our comprehensive courses cover
+        Mill, Lathe, 3D Milling, and Multi-Axis operations with hands-on
+        practice and real-world examples.
+      </p>
+      <div className="flex flex-wrap justify-center gap-3">
+        <Link href={getStartedHref} className="btn-primary">
+          Get started free
+        </Link>
+        <Link href="/lessons" className="btn-secondary">
+          Browse Courses
+        </Link>
       </div>
-      <div className="rounded-3xl border border-ink/10 bg-gradient-to-br from-surface to-white p-8 shadow-lg shadow-spark/10">
-        <div className="mb-6 flex items-center justify-between text-sm font-medium text-muted-ink">
-          <span>Machine readiness</span>
-          <span className="text-[hsl(var(--spark))]">Live preview</span>
-        </div>
-        <div className="space-y-5">
-          {readinessMetrics.map((item) => (
-            <div key={item.label} className="space-y-2">
-              <div className="flex items-center justify-between text-sm text-muted-ink">
-                <span>{item.label}</span>
-                <span>{item.value}%</span>
-              </div>
-              <div className="h-2 rounded-full bg-surface-strong">
-                <div
-                  className="h-full rounded-full bg-[hsl(var(--spark))]"
-                  style={{ width: `${item.value}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-8 rounded-2xl border border-white/40 bg-white/70 p-4 backdrop-blur">
-          <div className="mb-3 h-40 rounded-2xl border border-dashed border-ink/10 bg-surface/60" role="img" aria-label="Placeholder CNC simulator screenshot" />
-          <h3 className="text-sm font-semibold text-ink">Sparks in action</h3>
-          <p className="mt-2 text-sm text-muted-ink">
-            Students spend Sparks to run simulations, receive AI critiques, and
-            request instructor reviews—keeping cost predictable for your
-            program.
-          </p>
-        </div>
-      </div>
+      <ul className="grid gap-3 text-sm text-muted-ink max-w-xl mx-auto mt-8">
+        <li className="feature-bullet">
+          Comprehensive curriculum covering all CNC operations
+        </li>
+        <li className="feature-bullet">
+          Progress tracking and course completion certificates
+        </li>
+        <li className="feature-bullet">
+          Learn at your own pace with lifetime access
+        </li>
+      </ul>
     </section>
   )
 }
-
-

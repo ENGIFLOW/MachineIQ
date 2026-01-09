@@ -1,11 +1,9 @@
-import { UniversalHeader } from '@/components/layout/UniversalHeader'
 import Link from 'next/link'
 import LessonsPage from '@/components/lessons/page'
 
 export default function LessonsRoute() {
   return (
     <div className="min-h-screen flex flex-col">
-      <UniversalHeader />
       <main className="flex-1 px-4 py-6">
         <LessonsPage />
       </main>

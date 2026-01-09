@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
 import { Alert } from '@/components/ui/Alert'
+import { createClient } from '@/lib/supabase/client'
 
 export function ResetPasswordForm() {
   const [email, setEmail] = useState('')
@@ -18,12 +19,18 @@ export function ResetPasswordForm() {
     setError(null)
     setLoading(true)
 
-    // TODO: Replace with actual Supabase auth call
     try {
-      // Placeholder for Supabase resetPasswordForEmail
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      console.log('Reset password for:', { email })
-      setSuccess(true)
+      const supabase = createClient()
+
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset?token=`,
+      })
+
+      if (resetError) {
+        setError(resetError.message || 'Failed to send reset email')
+      } else {
+        setSuccess(true)
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to send reset email')
     } finally {
@@ -85,4 +92,3 @@ export function ResetPasswordForm() {
     </form>
   )
 }
-
