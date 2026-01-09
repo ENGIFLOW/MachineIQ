@@ -19,7 +19,7 @@ This application uses Stripe for payment processing. Follow these steps to set u
 
 1. In Stripe Dashboard, go to **Developers** → **Webhooks**
 2. Click **Add endpoint**
-3. Set the endpoint URL to: `https://yourdomain.com/api/webhooks/stripe`
+3. Set the endpoint URL to: `https://vietmastercamtraining.com/api/webhooks/stripe`
    - For local development, use Stripe CLI: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`
 4. Select events to listen to:
    - `checkout.session.completed`

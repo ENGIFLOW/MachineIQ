@@ -2,11 +2,12 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import Link from 'next/link'
 
-export default function PaymentSuccessPage({
+export default async function PaymentSuccessPage({
   searchParams,
 }: {
-  searchParams: { session_id?: string }
+  searchParams: Promise<{ session_id?: string }>
 }) {
+  const params = await searchParams
   return (
     <main className="flex-1 mx-auto max-w-2xl w-full px-4 py-12 sm:py-16">
       <Card className="p-8 text-center space-y-6">
@@ -26,12 +27,12 @@ export default function PaymentSuccessPage({
         <div className="space-y-2">
           <h1 className="text-3xl font-semibold text-ink">Payment Successful!</h1>
           <p className="text-muted-ink">
-            Thank you for subscribing to MachineIQ. Your subscription is now active.
+            Thank you for subscribing to VietMastercam Training. Your subscription is now active.
           </p>
         </div>
-        {searchParams.session_id && (
+        {params.session_id && (
           <p className="text-xs text-muted-ink">
-            Session ID: {searchParams.session_id}
+            Session ID: {params.session_id}
           </p>
         )}
         <Link href="/lessons">

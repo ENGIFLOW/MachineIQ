@@ -22,7 +22,7 @@ export function AppShell({ children, user }: AppShellProps) {
       </main>
       <footer className="border-t border-ink/10 bg-white/70 mt-auto">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-muted-ink sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} MachineIQ. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} VietMastercam Training. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>

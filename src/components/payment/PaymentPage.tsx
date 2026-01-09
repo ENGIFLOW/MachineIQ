@@ -80,7 +80,7 @@ export function PaymentPage() {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h1 className="text-3xl font-semibold text-ink">Subscribe to MachineIQ</h1>
+        <h1 className="text-3xl font-semibold text-ink">Subscribe to VietMastercam Training</h1>
         <p className="text-muted-ink">
           Get access to all courses and features with a monthly subscription
         </p>
