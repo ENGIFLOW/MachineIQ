@@ -5,9 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin-server'
 import { hasActiveSubscription } from '@/lib/database/queries'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-12-15.clover',
-})
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 /**
  * Check if user has an active subscription
