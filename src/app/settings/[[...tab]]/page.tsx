@@ -1,12 +1,13 @@
 import { AppShell } from '@/components/layout/AppShell'
 import SettingsPage from '@/components/settings/page'
 
-export default function SettingsRoute({
+export default async function SettingsRoute({
   params,
 }: {
-  params: { tab?: string[] }
+  params: Promise<{ tab?: string[] }>
 }) {
-  const activeTab = params.tab?.[0] || 'general'
+  const resolvedParams = await params
+  const activeTab = resolvedParams.tab?.[0] || 'general'
   return (
     <AppShell>
       <SettingsPage activeTab={activeTab} />

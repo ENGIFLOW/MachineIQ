@@ -1,6 +1,6 @@
 # VietMastercam Training - CNC Training Platform
 
-AI-powered CNC training platform for students, instructors, and advanced manufacturing teams.
+ CNC training platform for students, instructors, and advanced manufacturing teams.
 
 ## 🚀 Features
 
