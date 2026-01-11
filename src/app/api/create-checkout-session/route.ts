@@ -17,7 +17,15 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { userId, userEmail } = body
+    const { userId, userEmail, priceId } = body
+
+    // Verify Price ID is provided
+    if (!priceId) {
+      return NextResponse.json(
+        { error: 'Price ID is required' },
+        { status: 400 }
+      )
+    }
 
     // Get or create Stripe customer with user_id in metadata
     let customerId: string | undefined
@@ -47,15 +55,6 @@ export async function POST(request: NextRequest) {
         },
       })
       customerId = customer.id
-    }
-
-    // Verify Price ID is set
-    const priceId = process.env.STRIPE_PRICE_ID
-    if (!priceId) {
-      return NextResponse.json(
-        { error: 'STRIPE_PRICE_ID environment variable is not set' },
-        { status: 500 }
-      )
     }
 
     // Create Stripe Checkout Session

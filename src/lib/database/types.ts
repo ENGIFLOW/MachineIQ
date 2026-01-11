@@ -91,7 +91,8 @@ export interface LessonProgress {
 
 export interface Resource {
   id: string
-  lesson_id: string
+  lesson_id?: string | null
+  module_id?: string | null
   title_vi: string
   title_en?: string
   file_url: string

@@ -136,7 +136,7 @@ export function SignInForm() {
         <div className="flex items-center justify-between">
           <Label htmlFor="password">Password</Label>
           <Link
-            href="/auth/reset"
+            href="/auth/forgot"
             className="text-xs text-[hsl(var(--spark))] hover:underline"
           >
             Forgot password?

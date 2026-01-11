@@ -439,27 +439,50 @@ export default function LessonsPage() {
                 const isExpanded = expandedModules.has(module.id)
                 return (
                   <div key={module.id} className="border-b border-ink/10 last:border-b-0">
-                    <button
-                      onClick={() => toggleModule(module.id)}
-                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-surface/50 transition-colors"
-                    >
-                      <span className="font-medium text-sm text-ink">{module.title}</span>
-                      <svg
-                        className={`w-4 h-4 text-muted-ink transition-transform ${
-                          isExpanded ? 'rotate-180' : ''
-                        }`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                    <div className="px-4 py-3 flex items-center justify-between gap-2">
+                      <button
+                        onClick={() => toggleModule(module.id)}
+                        className="flex-1 flex items-center justify-between hover:bg-surface/50 transition-colors rounded px-2 py-1 -mx-2 -my-1"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </button>
+                        <span className="font-medium text-sm text-ink">{module.title}</span>
+                        <svg
+                          className={`w-4 h-4 text-muted-ink transition-transform ${
+                            isExpanded ? 'rotate-180' : ''
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+                      <Link
+                        href={`/modules/${module.id}/resources`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-1.5 px-2 py-1 text-xs font-medium text-muted-ink hover:text-ink hover:bg-surface/50 rounded transition-colors"
+                        title="View resources"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          />
+                        </svg>
+                        Resources
+                      </Link>
+                    </div>
                     {isExpanded && (
                       <div className="bg-surface/30">
                         {[...(module.lessons || [])]

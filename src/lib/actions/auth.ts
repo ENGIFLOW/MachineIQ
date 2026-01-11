@@ -1,6 +1,6 @@
 'use server'
 
-import { createAdminClient } from '@/lib/supabase/admin'
+import { createAdminClient } from '@/lib/supabase/admin-server'
 
 /**
  * Server action to check if a user exists in Supabase auth

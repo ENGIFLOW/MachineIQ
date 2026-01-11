@@ -179,6 +179,30 @@ export async function getModules(courseId: string): Promise<Module[]> {
   }
 }
 
+/**
+ * Get module by ID
+ */
+export async function getModuleById(moduleId: string): Promise<Module | null> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('modules')
+      .select('*')
+      .eq('id', moduleId)
+      .single()
+
+    if (error) {
+      console.error('Error fetching module:', error)
+      return null
+    }
+
+    return data
+  } catch (error) {
+    console.error('[getModuleById] Exception:', error)
+    return null
+  }
+}
+
 // ============================================
 // LESSON QUERIES
 // ============================================
@@ -697,6 +721,25 @@ export async function getLessonResources(lessonId: string): Promise<Resource[]> 
 
   if (error) {
     console.error('Error fetching resources:', error)
+    return []
+  }
+
+  return data || []
+}
+
+/**
+ * Get resources for a module
+ */
+export async function getModuleResources(moduleId: string): Promise<Resource[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('resources')
+    .select('*')
+    .eq('module_id', moduleId)
+    .order('created_at', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching module resources:', error)
     return []
   }
 

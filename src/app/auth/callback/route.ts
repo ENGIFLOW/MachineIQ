@@ -8,6 +8,7 @@ export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
   const next = requestUrl.searchParams.get('next') ?? '/lessons'
+  const type = requestUrl.searchParams.get('type') // 'recovery' for password reset
 
   if (code) {
     const supabase = await createClient()
@@ -28,6 +29,13 @@ export async function GET(request: Request) {
         return NextResponse.redirect(
           new URL('/auth/sign-in?error=account_deleted', requestUrl.origin)
         )
+      }
+
+      // If this is a password reset flow, add a flag to the redirect URL
+      if (type === 'recovery' || next.includes('/auth/reset')) {
+        const redirectUrl = new URL(next, requestUrl.origin)
+        redirectUrl.searchParams.set('from', 'reset')
+        return NextResponse.redirect(redirectUrl)
       }
 
       // Ensure profile exists (in case trigger didn't fire)

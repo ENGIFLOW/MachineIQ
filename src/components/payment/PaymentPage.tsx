@@ -8,10 +8,17 @@ import { Alert } from '@/components/ui/Alert'
 import { createClient } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
 
+// Price IDs for subscriptions
+const MONTHLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID || ''
+const YEARLY_PRICE_ID = 'price_1SnnvfPK1mIOADePXrSme2E2'
+
+type SubscriptionPlan = 'monthly' | 'yearly'
+
 export function PaymentPage() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan>('monthly')
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
@@ -38,6 +45,12 @@ export function PaymentPage() {
         return
       }
 
+      const priceId = selectedPlan === 'monthly' ? MONTHLY_PRICE_ID : YEARLY_PRICE_ID
+
+      if (!priceId) {
+        throw new Error('Price ID not configured. Please contact support.')
+      }
+
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
@@ -46,6 +59,7 @@ export function PaymentPage() {
         body: JSON.stringify({
           userId: user.id,
           userEmail: user.email,
+          priceId: priceId,
         }),
       })
 
@@ -77,24 +91,86 @@ export function PaymentPage() {
     )
   }
 
+  const plans = {
+    monthly: {
+      price: 99,
+      period: 'month',
+      priceId: MONTHLY_PRICE_ID,
+      savings: null,
+      renewalText: 'monthly',
+    },
+    yearly: {
+      price: 500,
+      period: 'year',
+      priceId: YEARLY_PRICE_ID,
+      savings: 'Save $688/year',
+      renewalText: 'annually',
+    },
+  }
+
+  const selectedPlanData = plans[selectedPlan]
+
   return (
     <div className="space-y-8">
       <div className="space-y-2">
         <h1 className="text-3xl font-semibold text-ink">Subscribe to VietMastercam Training</h1>
         <p className="text-muted-ink">
-          Get access to all courses and features with a monthly subscription
+          Get access to all courses and features with a subscription
         </p>
       </div>
 
       {error && <Alert variant="error">{error}</Alert>}
 
+      {/* Plan Selection Toggle */}
+      <div className="flex items-center justify-center gap-4">
+        <button
+          type="button"
+          onClick={() => setSelectedPlan('monthly')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            selectedPlan === 'monthly'
+              ? 'bg-[hsl(var(--spark))] text-white'
+              : 'bg-ink/5 text-muted-ink hover:bg-ink/10'
+          }`}
+        >
+          Monthly
+        </button>
+        <button
+          type="button"
+          onClick={() => setSelectedPlan('yearly')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors relative ${
+            selectedPlan === 'yearly'
+              ? 'bg-[hsl(var(--spark))] text-white'
+              : 'bg-ink/5 text-muted-ink hover:bg-ink/10'
+          }`}
+        >
+          Yearly
+          {selectedPlan === 'yearly' && (
+            <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full">
+              Save
+            </span>
+          )}
+        </button>
+      </div>
+
       <Card className="p-8">
         <div className="space-y-6">
           <div className="space-y-2">
+            {selectedPlanData.savings && (
+              <div className="inline-block bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium px-2 py-1 rounded">
+                {selectedPlanData.savings}
+              </div>
+            )}
             <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-ink">$99</span>
-              <span className="text-muted-ink">/month</span>
+              <span className="text-4xl font-bold text-ink">
+                ${selectedPlanData.price}
+              </span>
+              <span className="text-muted-ink">/{selectedPlanData.period}</span>
             </div>
+            {selectedPlan === 'yearly' && (
+              <p className="text-sm text-muted-ink">
+                ${(selectedPlanData.price / 12).toFixed(2)}/month billed annually
+              </p>
+            )}
             <p className="text-sm text-muted-ink">Per seat subscription</p>
           </div>
 
@@ -148,15 +224,19 @@ export function PaymentPage() {
 
           <Button
             onClick={handleCheckout}
-            disabled={checkoutLoading}
+            disabled={checkoutLoading || !selectedPlanData.priceId}
             className="w-full"
             size="lg"
           >
-            {checkoutLoading ? 'Processing...' : 'Subscribe for $99/month'}
+            {checkoutLoading
+              ? 'Processing...'
+              : selectedPlan === 'monthly'
+              ? 'Subscribe for $99/month'
+              : 'Subscribe for $500/year'}
           </Button>
 
           <p className="text-xs text-center text-muted-ink">
-            Secure payment powered by Stripe. Your subscription will auto-renew monthly.
+            Secure payment powered by Stripe. Your subscription will auto-renew {selectedPlanData.renewalText}.
           </p>
         </div>
       </Card>
