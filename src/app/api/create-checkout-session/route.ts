@@ -57,6 +57,10 @@ export async function POST(request: NextRequest) {
       customerId = customer.id
     }
 
+    // Always use production domain for Stripe checkout redirects
+    // Checkout success/cancel URLs should point to production, not localhost
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vietmastercamtraining.com'
+
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -68,8 +72,8 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: 'subscription',
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin}/payment`,
+      success_url: `${siteUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl}/payment`,
       metadata: {
         userId: userId || user.id,
       },

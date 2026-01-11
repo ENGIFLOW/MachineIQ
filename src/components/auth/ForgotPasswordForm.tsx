@@ -31,8 +31,12 @@ export function ForgotPasswordForm() {
     try {
       const supabase = createClient()
 
+      // Always use production domain for password reset links
+      // Password reset emails should point to production, not localhost
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vietmastercamtraining.com'
+      
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback?next=/auth/reset`,
+        redirectTo: `${siteUrl}/auth/callback?next=/auth/reset`,
       })
 
       if (resetError) {

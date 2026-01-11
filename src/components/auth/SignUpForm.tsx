@@ -59,11 +59,15 @@ export function SignUpForm() {
       // User doesn't exist, proceed with account creation
       const supabase = createClient()
 
+      // Always use production domain for email verification links
+      // Email verification links should point to production, not localhost
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vietmastercamtraining.com'
+
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: `${siteUrl}/auth/callback`,
           data: {
             full_name: fullName,
           },
